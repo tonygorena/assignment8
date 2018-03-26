@@ -6,41 +6,46 @@
 package assignment8;
 
 /**
- *
  * @author tonygorena
  */
-public class HashTable<Key extends Comparable<Key>, E> {
+public class Hasher<E> {
 
-    private static final int defaultSize = 10;
-    private int pos;
-    private E[] hashArray;
-    private int max;
-    int count = 0;
 
-    HashTable() {
-        this(defaultSize);
+    public int hashForItem(E item, int size) {
+        int parta = 0;
+        int partb = 0;
+        int partc = 0;
+        int split = 0;
 
+        byte[] byt = item.toString().getBytes();
+        for (int i = 0; i < byt.length-1; i = i + byt.length / 3) {
+
+            int part = i + byt.length / 3;
+            int sum = 0;
+            for (int j = i; j < part; j++) {
+                sum = sum + byt[j];
+
+            }
+            split++;
+            switch (split) {
+                case 1:
+                    parta = sum;
+                    break;
+                case 2:
+                    partb = sum;
+                    break;
+                case 3:
+                    partc = sum;
+                    break;
+            }
+        }
+        int hash = parta * partb;
+        hash = hash ^ partc;
+        hash = hash % size;
+
+
+        return hash;
     }
 
-    HashTable(int size) {
-        max = size;
-        int count = 0;
-        hashArray = (E[]) new Object[size];
 
-    }
-
-    public int key() {
-         = hashArray[pos];
-        return this.hasher(str);
-
-    }
-
-    private int hasher(E obj) {
-        
-        byte[] byt =  (byte[])obj;
-        int bytLength = byt.length;
-
-        
-
-    
 }

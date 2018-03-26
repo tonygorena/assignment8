@@ -8,13 +8,12 @@ package assignment8;
 import java.util.Scanner;
 
 /**
- *
  * @author tonygorena
  */
 public class a8main {
 
     public static void main(String[] args) {
-
+        int size = 23;
         int choice;                                  //Choice variable for options
         boolean stop = false;                        //variable to stop program
         Scanner keyboard = new Scanner(System.in);   //Creates scanner for user input
@@ -27,10 +26,10 @@ public class a8main {
         System.out.println("3) FIND item");
         System.out.println("4) SHOW Hash table");
         System.out.println("5) QUIT \n");
-        System.out.print("Enter Queue Size: ");
 
-        int size = keyboard.nextInt();              //Gets size for userHash
-        HashDictionary userHash = new HashDictionary(size);         //Creates new hash object
+
+
+        HashDictionary userHash = new HashDictionary<String>(size);         //Creates new hash object
 
         System.out.print("Enter Choice: ");         //Prompt user for choice
 
@@ -46,31 +45,33 @@ public class a8main {
             //Inserts item to hash table
             if (choice == 1) {
                 System.out.print("Enter item to INSERT: ");
-                Object item = keyboard.next();
+                String item = keyboard.next();
                 error(userHash.insert(item));
                 System.out.print("Enter Choice: ");
             }
 
             //Delete an item from hash table
             if (choice == 2) {
-                error(userHash.delete());
                 System.out.print("Enter item to DELETE: ");
+                String item = keyboard.next();
+                error(userHash.delete(item));
+                System.out.print("Enter Choice: ");
             }
 
             //Find item in hash table
             if (choice == 3) {
                 System.out.print("Enter item to FIND: ");
-                Object item = keyboard.next();
+                String item = keyboard.next();
                 error(userHash.find(item));
                 System.out.print("Enter Choice: ");
-            }         
+            }
 
             //
             if (choice == 4) {
-                error(userHash.show());
+                userHash.show();
                 System.out.print("Enter Choice: ");
-            }         
-           
+            }
+
             //Quit the program
             if (choice == 5) {
                 stop = true;
@@ -96,15 +97,17 @@ public class a8main {
 
         //Switch statement to report errors
         switch (error) {
-            case 1:
+            case -1:
                 errorString = "Hash table is full";
                 break;
-            case 2:
+            case -2:
                 errorString = "Hash Table is empty";
                 break;
-            case 3:
+            case -3:
                 errorString = "Not in range";
                 break;
+            case -4:
+                errorString = "Not in table";
 
         }
         System.out.println(errorString);            //Prints error message

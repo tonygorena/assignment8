@@ -6,81 +6,77 @@
 package assignment8;
 
 /**
- *
  * @author tonygorena
  */
-public class HashDictionary <Key extends Comparable<Key>, E>{
-    
-    private static final int defaultSize = 10;
-    private int count;
-    private int maxSize;
-    private HashTable<Key, E> hashTable; 
+public class HashDictionary<E> {
 
-    
+    private static final int DEFAULT_SIZE = 10;
+    private E[] hashArray;
 
-    public HashDictionary(){
-        this(defaultSize);
-        
-    }
-    
-    public HashDictionary(int s){
-        maxSize = s;
-        count = 0;
-        
-    }
-    public int insert(E item, int pos) {
-        
-    }
+    Hasher hasher = new Hasher<E>();
+    int pos = 0;
+    int count = 0;
+    int slots = 2;
+    int size = 0;
+    int overPos = 0;
 
 
-    public int delete(int pos) {
-        
+    HashDictionary() {
+        this(DEFAULT_SIZE);
+
+    }
+
+    HashDictionary(int s) {
+        hashArray = (E[]) new Object[s * slots];
+        size = s;
+    }
+
+    public int insert(E item) {
+        E[] overflowArray = (E[]) new Object[size / 2];
+
+        pos = this.hasher.hashForItem(item, size) * slots;
+        if (hashArray[pos] == null) {
+            hashArray[pos] = item;
+            count++;
+            return pos;
+        } else if (hashArray[pos + 1] == null) {
+            hashArray[pos + 1] = item;
+            count++;
+            return pos+1;
+        } else {
+            overflowArray[overPos] = item;
+            overPos++;
+            return overPos-1;
+        }
+
+    }
+
+    public int delete(E item) {
+
+        int result = this.find(item);
+
+        if (result < 0)
+            return result;
+        hashArray[result] = null;
+
+        count--;
+        return result;
+    }
+
+    public int find(E item) {
+        if (count == 0)
+            return -2;
+       int result = this.hasher.hashForItem(item, size) * slots;
+
+        return -4;
+    }
+
+    public void show() {
+        for (int i = 0; i < hashArray.length; i++) {
+            System.out.println(hashArray[i]);
+        }
+
     }
 
 
-    public int show() {
-        
-    }
-
-
-    public int count() {
-        
-    }
-
-
-    public int find(){
-        int home;
-        int pos = home = hasher(k);
-        for (int i=1; (hashTable[pos] != null) && (hashTable[pos].key().compareTo(k) != 0); i++)
-            pos = (home + p(k, i)) % count; 
-        if (hashTable[pos] == null) return null;
-        else return hashTable[pos].value();
-    }
-    
-    
-   
-    
-    
-    public void clear() {
-        count = 0;
-    }
-
-    
-    public boolean empty() {
-        
-    }
-
-    
-    public boolean full() {
-        
-    }
-    
-    private int hasher(){
-        
-    }
-    
-    private Key key(int pos){
-        return hashTable[pos];
-    }
-    
 }
