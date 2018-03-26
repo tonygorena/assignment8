@@ -24,7 +24,7 @@ public class HashTable<Key extends Comparable<Key>, E> {
 
     HashTable(int size) {
         max = size;
-        int count = 0;                     //amount of objects in elements
+        int count = 0;
         hashArray = (E[]) new Object[size];
 
     }
@@ -39,10 +39,8 @@ public class HashTable<Key extends Comparable<Key>, E> {
         
         byte[] byt =  (byte[])obj;
         int bytLength = byt.length;
-        int i, sum;
-        for (sum = 0, i = 0; i < str.length(); i++) {
-            
-        return sum % max;
+
+        
 
     
 }
