@@ -12,6 +12,7 @@ public class HashDictionary<E> {
 
     private static final int DEFAULT_SIZE = 10;
     private E[] hashArray;
+    private E[] overflowArray;
 
     Hasher hasher = new Hasher<E>();
     int pos = 0;
@@ -28,11 +29,12 @@ public class HashDictionary<E> {
 
     HashDictionary(int s) {
         hashArray = (E[]) new Object[s * slots];
+        overflowArray = (E[]) new Object[s * slots];
         size = s;
     }
 
     public int insert(E item) {
-        E[] overflowArray = (E[]) new Object[size / 2];
+
 
         pos = this.hasher.hashForItem(item, size) * slots;
         if (hashArray[pos] == null) {
@@ -57,7 +59,15 @@ public class HashDictionary<E> {
 
         if (result < 0)
             return result;
-        hashArray[result] = null;
+       if(hashArray[result] == item){
+           hashArray[result] = null;
+       }
+       else if (overflowArray[result] == item){
+           overflowArray[result] = null;
+           overPos--;
+           count--;
+           return result;
+       }
 
         count--;
         return result;
@@ -67,6 +77,16 @@ public class HashDictionary<E> {
         if (count == 0)
             return -2;
        int result = this.hasher.hashForItem(item, size) * slots;
+       for (int i = result ; i < result + slots; i++ ) {
+           if (item == hashArray[i]) {
+               return i;
+           }
+       }
+       for (int j= 0; j < overflowArray.length; j++){
+           if (item == overflowArray[j]) {
+               return j;
+           }
+       }
 
         return -4;
     }
@@ -74,6 +94,9 @@ public class HashDictionary<E> {
     public void show() {
         for (int i = 0; i < hashArray.length; i++) {
             System.out.println(hashArray[i]);
+        }
+        for (int i = 0; i < overflowArray.length; i++) {
+            System.out.println(overflowArray[i]);
         }
 
     }
